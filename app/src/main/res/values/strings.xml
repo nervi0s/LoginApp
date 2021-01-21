@@ -5,4 +5,7 @@
     <string name="login_value3">Registrar</string>
     <string name="login_value4">Login</string>
     <string name="login_value5">Lanzar</string>
+    <string name="welcome">¡FELICIDADES!</string>
+    <string name="user">example@example.com</string>
+    <string name="msg">Has iniciado sesión correctamente</string>
 </resources>

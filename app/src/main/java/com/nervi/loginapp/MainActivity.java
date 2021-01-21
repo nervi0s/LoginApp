@@ -3,12 +3,15 @@ package com.nervi.loginapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +57,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
             }
         } else {
-
+            if (!existUser(user, users)) {
+                Toast.makeText(this, "El usuario introducido no existe", Toast.LENGTH_SHORT).show();
+            } else {
+                if (isPassCorrect(user, hashPass(pass), sp.getAll())) {
+                    Intent i = new Intent(this, Logged.class);
+                    i.putExtra("userName", user);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(this, "La contraseña no es correcta", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
 
     }
@@ -66,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private boolean isPassCorrect(String user, String pass, Map<String, ?> dataBase) {
+        String hashedPass = (String) dataBase.get(user);
+        return hashedPass.equals(pass);
     }
 
     private String hashPass(String pass) {
