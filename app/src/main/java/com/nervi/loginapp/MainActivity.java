@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         boolean registerSelected = reg.isChecked();
         boolean loginSelected = login.isChecked();
 
-        String user = this.user.getText().toString();
+        String user = this.user.getText().toString().toLowerCase();
         String pass = this.pass.getText().toString();
 
         if (user.isEmpty() || pass.isEmpty() || (!registerSelected && !loginSelected)) {
@@ -95,9 +98,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String hashPass(String pass) {
-        return pass;
-    }
+        StringBuilder result = new StringBuilder();
+        try {
+            MessageDigest message = MessageDigest.getInstance("SHA-256");
+            byte[] encodedHash = message.digest(pass.getBytes(StandardCharsets.UTF_8));
 
-    //ToDo create method hashPass()
-    //Todo check Toast
+            for (byte aByte : encodedHash) {
+                result.append(String.format("%02x", aByte));
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            Toast.makeText(this, "A ocurrido un error en la DB", Toast.LENGTH_SHORT).show();
+        }
+        System.out.println(result);
+        return result.toString();
+    }
 }
