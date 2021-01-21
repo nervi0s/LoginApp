@@ -38,38 +38,46 @@ public class MainActivity extends AppCompatActivity {
         boolean registerSelected = reg.isChecked();
         boolean loginSelected = login.isChecked();
 
-        //ToDo check all camps and radio buttons must be full
-
-        SharedPreferences sp = getSharedPreferences("database", Context.MODE_PRIVATE);
-
-        String[] users = sp.getAll().keySet().toArray(new String[0]);
         String user = this.user.getText().toString();
         String pass = this.pass.getText().toString();
 
-        if (registerSelected) {
-            if (existUser(user, users)) {
-                Toast.makeText(this, "El usuario ya está registrado", Toast.LENGTH_SHORT).show();
-            } else {
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString(user, hashPass(pass));
-                editor.apply(); // .commit();
-
-                Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-            }
+        if (user.isEmpty() || pass.isEmpty() || (!registerSelected && !loginSelected)) {
+            Toast.makeText(this, "Debe rellenar todos los campos", Toast.LENGTH_SHORT).show();
+            System.out.println("Debe rellenar todos los campos");
         } else {
-            if (!existUser(user, users)) {
-                Toast.makeText(this, "El usuario introducido no existe", Toast.LENGTH_SHORT).show();
-            } else {
-                if (isPassCorrect(user, hashPass(pass), sp.getAll())) {
-                    Intent i = new Intent(this, Logged.class);
-                    i.putExtra("userName", user);
-                    startActivity(i);
+
+            SharedPreferences sp = getSharedPreferences("database", Context.MODE_PRIVATE);
+
+            String[] users = sp.getAll().keySet().toArray(new String[0]);
+
+            if (registerSelected) {
+                if (existUser(user, users)) {
+                    Toast.makeText(this, "El usuario ya está registrado", Toast.LENGTH_SHORT).show();
+                    System.out.println("El usuario ya está registrado");
                 } else {
-                    Toast.makeText(this, "La contraseña no es correcta", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(user, hashPass(pass));
+                    editor.apply(); // .commit();
+
+                    Toast.makeText(this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                    System.out.println("Usuario registrado correctamente");
+                }
+            } else {
+                if (!existUser(user, users)) {
+                    Toast.makeText(this, "El usuario introducido no existe", Toast.LENGTH_SHORT).show();
+                    System.out.println("El usuario introducido no existe");
+                } else {
+                    if (isPassCorrect(user, hashPass(pass), sp.getAll())) {
+                        Intent i = new Intent(this, Logged.class);
+                        i.putExtra("userName", user);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(this, "La contraseña no es correcta", Toast.LENGTH_SHORT).show();
+                        System.out.println("La contraseña no es correcta");
+                    }
                 }
             }
         }
-
     }
 
     private boolean existUser(String key, String[] users) {
@@ -87,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String hashPass(String pass) {
-        return null;
+        return pass;
     }
+
+    //ToDo create method hashPass()
+    //Todo check Toast
 }
