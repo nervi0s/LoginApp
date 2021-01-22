@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            Toast.makeText(this, "A ocurrido un error en la DB", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ha ocurrido un error en la DB", Toast.LENGTH_SHORT).show();
         }
         System.out.println(result);
         return result.toString();
