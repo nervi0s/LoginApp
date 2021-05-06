@@ -8,4 +8,5 @@
     <string name="welcome">¡FELICIDADES!</string>
     <string name="user">example@example.com</string>
     <string name="msg">Has iniciado sesión correctamente</string>
+    <string name="password">password</string>
 </resources>
